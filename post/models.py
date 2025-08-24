@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from config.DRY import NULLABLE
 from django.conf import settings
 
-from config.validators import validate_password_complexity
+from config.validators import validate_password_complexity, validate_title_no_bad_words
 
 
 class Post(models.Model):
@@ -22,7 +22,7 @@ class Post(models.Model):
         max_length=255,
         verbose_name='Заголовок',
         help_text=_('Максимум 255 символов'),
-        validators=[validate_password_complexity]
+        validators=[validate_title_no_bad_words]
     )
 
     text = models.TextField(verbose_name='Начните писать текст')

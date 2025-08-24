@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post
+from .services import PostService
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -14,5 +15,5 @@ class PostSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'author', 'created_at', 'updated_at']
 
     def create(self, validated_data):
-        validated_data['author'] = self.context['request'].user
-        return super().create(validated_data)
+        author = self.context['request'].user
+        return PostService.create_post(validated_data, author)
