@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from config.DRY import NULLABLE
+from config.validators import validate_email_domain
 
 
 class CustomUserManager(BaseUserManager):
@@ -48,6 +49,13 @@ class CustomUser(AbstractUser):
         help_text=_('Уникальный логин пользователя')
     )
 
+    email = models.EmailField(
+        _('email address'),
+        unique=True,
+        validators=[validate_email_domain],
+        help_text=_('Разрешены только mail.ru и yandex.ru')
+    )
+
     phone_number = models.CharField(
         max_length=15,
         **NULLABLE,
@@ -70,6 +78,17 @@ class CustomUser(AbstractUser):
         auto_now=True,
         verbose_name='Дата обновления'
     )
+
+    def clean(self):
+        """Валидация на уровне модели"""
+        super().clean()
+        if self.birthdate:
+            from config.validators import validate_adult_age
+            validate_adult_age(self.birthdate)
+
+    def save(self, *args, **kwargs):
+        self.clean()  # Вызываем валидацию при сохранении
+        super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'login'
     REQUIRED_FIELDS = ['email']
