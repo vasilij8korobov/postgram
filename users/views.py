@@ -12,11 +12,7 @@ class UserCreateView(generics.CreateAPIView):
     """Регистрация нового пользователя (CREATE)"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-    def get_permissions(self):
-        if self.action == 'create':
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
+    permission_classes = [permissions.AllowAny]
 
 
 class UserListView(generics.ListAPIView):

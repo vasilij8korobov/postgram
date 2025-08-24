@@ -1,9 +1,9 @@
 from django.urls import path
-
-from users.views import UserCreateView, UserListView, UserDetailView
+from .views import UserCreateView, UserListView, UserDetailView, CustomAuthToken
 
 urlpatterns = [
-    path('users/register/', UserCreateView.as_view()),
-    path('users/', UserListView.as_view()),
-    path('users/<int:pk>/', UserDetailView.as_view()),
+    path('register/', UserCreateView.as_view(), name='user-register'),
+    path('token/login/', CustomAuthToken.as_view(), name='api-token-auth'),
+    path('', UserListView.as_view(), name='user-list'),
+    path('<int:pk>/', UserDetailView.as_view(), name='user-detail'),
 ]
