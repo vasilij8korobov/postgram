@@ -1,9 +1,7 @@
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from config import settings
-from post.models import Post
+from django.conf import settings
 
 
 class Comment(models.Model):
@@ -11,9 +9,10 @@ class Comment(models.Model):
     Модель комментария
     """
     post = models.ForeignKey(
-        Post,
+        'post.Post',
         on_delete=models.CASCADE,
-        related_name='post_comments'
+        verbose_name=_("Пост"),
+        related_name='post_comments',
     )
 
     author = models.ForeignKey(
