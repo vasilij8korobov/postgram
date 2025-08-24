@@ -31,4 +31,3 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['GET']:
             return [permissions.AllowAny()]
         return [IsAuthorOrAdmin()]
-
