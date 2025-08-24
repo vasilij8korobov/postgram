@@ -42,6 +42,9 @@ class CustomAuthToken(ObtainAuthToken):
     """Авторизация с получением токена"""
 
     def post(self, request, *args, **kwargs):
+        if 'login' in request.data:
+            request.data['username'] = request.data['login']
+
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
