@@ -8,6 +8,14 @@ class Post(models.Model):
     """
     Модель поста
     """
+
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='posts',
+        verbose_name=_('Автор')
+    )
+
     title = models.CharField(
         max_length=255,
         verbose_name='Заголовок',
@@ -17,23 +25,9 @@ class Post(models.Model):
     text = models.TextField(verbose_name='Начните писать текст')
 
     image = models.ImageField(
-        upload_to='images/posts/%Y/%m/%d/',
+        upload_to='images/posts/',
         **NULLABLE,
         verbose_name='Изображение'
-    )
-
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='posts',
-        verbose_name=_('Автор')
-    )
-
-    comment = models.ManyToManyField(  # Лучше отдельная модель для комментариев
-        'Comment',
-        related_name='post_comments',
-        verbose_name='Комментарий',
-        **NULLABLE
     )
 
     created_at = models.DateField(
